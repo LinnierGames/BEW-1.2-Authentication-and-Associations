@@ -9,7 +9,7 @@ router.get('/new', function(req, res, next) {
 });
 
 router.post('/new', function(req, res, next) {
-  console.log(req.body)
+  console.log(req.body.title)
   Posts.create(req.body, (error, newPost) => {
     res.send((error, newPost))
   })
