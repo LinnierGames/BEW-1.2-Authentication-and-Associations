@@ -3,6 +3,12 @@ var router = express.Router();
 
 const Posts = require('../models/posts')
 
+router.get('/', function(req, res, next) {
+  Posts.find((error, posts) => {
+    res.render('posts-index', { title: 'Posts', posts });
+  })
+});
+
 router.get('/new', function(req, res, next) {
   res.render('posts-new', { title: "New Post" });
 });

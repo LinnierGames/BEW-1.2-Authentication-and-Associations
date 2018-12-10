@@ -1,0 +1,8 @@
+extend layout
+
+block content
+	.col-sm-8.col-sm-offset-2
+		ul
+			each post in posts
+				li.list-group-item
+					include particals/_posts-cell-1

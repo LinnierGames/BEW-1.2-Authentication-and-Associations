@@ -1,5 +1,7 @@
 extend layout
 
 block content
-	h1= post.title
-	p= post.summary
+	.row
+		.col-sm-6.col-sm-offset-3
+			a.lead(href=post.url)= post.title
+			p= post.summary
