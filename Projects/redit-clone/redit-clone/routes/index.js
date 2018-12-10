@@ -1,9 +1,12 @@
 var express = require('express');
 var router = express.Router();
 
-/* GET home page. */
+const Posts = require('../models/posts')
+
 router.get('/', function(req, res, next) {
-  res.render('index', { title: 'Redit Clone!' });
+  Posts.find((error, posts) => {
+    res.render('index', { title: 'Redit Clone!', posts });
+  })
 });
 
 module.exports = router;
