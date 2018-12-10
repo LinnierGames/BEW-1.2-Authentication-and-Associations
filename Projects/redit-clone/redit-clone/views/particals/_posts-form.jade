@@ -1,7 +1,19 @@
 form(action="/posts/new" method="post")
-	p Title
-	br
-	input(type="text" name="title")
-	br
+	.form-group
+		label(for='post-title') Title
+		br
+		input.form-control(type="text" name="title")
+
+		label(for='post-url') Url
+		br
+		input.form-control(type="url" name="url")
+
+		label(for='post-summary') Summary
+		br
+		input.form-control(type="text" name="summary")
+
+	.form-group
+		label(for='post-subreddit') Subreddit
+		input#post-subreddit.form-control(name='subreddit', type='text', placeholder='Subreddit')
 
 	input(type="submit" value="Submit")

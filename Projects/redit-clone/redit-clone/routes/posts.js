@@ -16,7 +16,7 @@ router.get('/new', function(req, res, next) {
 router.post('/new', function(req, res, next) {
   console.log(req.body.title)
   Posts.create(req.body, (error, newPost) => {
-    res.send((error, newPost))
+    res.redirect("/posts/")
   })
 });
 
@@ -27,6 +27,15 @@ router.get('/:postId', function(req, res, next) {
     }
     
     res.render('posts-show', { title: post.title, post });
+  })
+});
+
+// SUBREDDIT
+router.get("/r/:subreddit", function(req, res) {
+  const subreddit = req.params.subreddit
+
+  Posts.find({ subreddit: subreddit}, (error, posts) => {
+    res.render('posts-index', { title: `Posts for ${subreddit}`, posts });
   })
 });
 
