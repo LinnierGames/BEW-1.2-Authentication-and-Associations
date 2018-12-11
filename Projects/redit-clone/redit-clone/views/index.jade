@@ -6,4 +6,7 @@ block content
 
   h1 Posts
   each post in posts
-    include particals/_posts-cell-1
+    ul
+      each post in posts
+        li.list-group-item
+          include particals/_posts-cell-1

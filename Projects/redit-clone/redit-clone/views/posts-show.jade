@@ -1,7 +1,14 @@
 extend layout
 
 block content
+	h1= title
 	.row
 		.col-sm-6.col-sm-offset-3
-			a.lead(href=post.url)= post.title
+			p Subread-its
+				each a_subredit in post.subreddits
+					a.subreddit-link(href="/posts/r/#{a_subredit}")= a_subredit
+			
+			a.lead(href=post.url)= post.url
+
+			h3 Summary
 			p= post.summary

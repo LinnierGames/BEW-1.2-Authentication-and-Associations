@@ -14,8 +14,10 @@ router.get('/new', function(req, res, next) {
 });
 
 router.post('/new', function(req, res, next) {
-  console.log(req.body.title)
-  Posts.create(req.body, (error, newPost) => {
+  var postBody = req.body
+  filteredSubreddits = postBody.subreddits.split(",").map(e => e.trim()).filter(e => e != "")
+  postBody.subreddits = filteredSubreddits
+  Posts.create(postBody, (error, newPost) => {
     res.redirect("/posts/")
   })
 });
@@ -34,7 +36,7 @@ router.get('/:postId', function(req, res, next) {
 router.get("/r/:subreddit", function(req, res) {
   const subreddit = req.params.subreddit
 
-  Posts.find({ subreddit: subreddit}, (error, posts) => {
+  Posts.find({ subreddits: subreddit}, (error, posts) => {
     res.render('posts-index', { title: `Posts for ${subreddit}`, posts });
   })
 });

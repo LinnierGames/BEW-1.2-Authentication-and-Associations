@@ -5,11 +5,16 @@ var PostSchema = new Schema({
 	title: { type: String, required: true },
 	url: { type: String, required: true },
 	summary: { type: String, required: true },
-	subreddit: { type: String, required: true },
+	subreddits: { type: [String], required: true },
 	
 	createdAt: { type: Date },
 	updatedAt: { type: Date }
 });
+
+// PostSchema.virtual("subredits")
+// 	.get(() => {
+// 		return 
+// 	})
 
 PostSchema.pre("save", function(next) {
 	// SET createdAt AND updatedAt
