@@ -1,0 +1,14 @@
+p Comments: #{comments.count}
+
+form(action='/posts/#{post._id}/comments' method='post')
+	input.form-control(type="text" name="content" placeholder="New Comment...")
+
+	input(type="submit" value="New Comment")
+
+	- //hidden
+	input(type='hidden' name="postId" value=post._id)
+
+ul
+	each a_comment in comments
+		li.list-group-item
+			p= a_comment.content

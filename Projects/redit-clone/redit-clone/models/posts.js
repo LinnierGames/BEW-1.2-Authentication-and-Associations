@@ -6,6 +6,7 @@ var PostSchema = new Schema({
 	url: { type: String, required: true },
 	summary: { type: String, required: true },
 	subreddits: { type: [String], required: true },
+	comments: [{ type: Schema.Types.ObjectId, ref: 'Comment' }],
 	
 	createdAt: { type: Date },
 	updatedAt: { type: Date }

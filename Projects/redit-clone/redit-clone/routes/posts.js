@@ -1,7 +1,9 @@
 var express = require('express');
 var router = express.Router();
+var comments = require('./comments')
 
 const Posts = require('../models/posts')
+const Comments = require('../models/comments')
 
 router.get('/', function(req, res, next) {
   Posts.find((error, posts) => {
@@ -23,13 +25,18 @@ router.post('/new', function(req, res, next) {
 });
 
 router.get('/:postId', function(req, res, next) {
-  Posts.findById(req.params.postId, (error, post) => {
-    if (error) {
-      return next()
-    }
-    
-    res.render('posts-show', { title: post.title, post });
-  })
+  Posts.findById(req.params.postId)
+    .populate('comments')
+    .then((post) => {
+      res.render('posts-show', { title: post.title, post, comments: post.comments });
+    })
+    .catch((error) => {
+      if (error) {
+        console.log(error)
+
+        return next()
+      }
+    })
 });
 
 // SUBREDDIT
@@ -40,5 +47,7 @@ router.get("/r/:subreddit", function(req, res) {
     res.render('posts-index', { title: `Posts for ${subreddit}`, posts });
   })
 });
+
+router.use("/:postId/comments", comments);
 
 module.exports = router;

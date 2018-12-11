@@ -10,5 +10,10 @@ block content
 			
 			a.lead(href=post.url)= post.url
 
+	.row
+		.col-sm-12
 			h3 Summary
 			p= post.summary
+
+			h3 Comments
+			include particals/_comments
