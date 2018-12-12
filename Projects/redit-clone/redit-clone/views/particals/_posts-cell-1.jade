@@ -3,4 +3,4 @@ br
 a(href=post.url)= post.url
 .text-right
 	each a_subredit in post.subreddits
-		a.subreddit-link(href="/posts/r/#{a_subredit}")= a_subredit
+		a.link(href="/posts/r/#{a_subredit}")= a_subredit
