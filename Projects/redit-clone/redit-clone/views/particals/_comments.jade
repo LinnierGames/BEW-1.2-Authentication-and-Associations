@@ -8,10 +8,11 @@ mixin popComments(comments, indent)
 				.media-body
 					p(id=a_comment._id)= a_comment.content
 					- if (indent >= 3)
-						a(href="/posts/#{post._id}/comments/#{a_comment._id}/thread") View More Replies (#{comments.length})
+						a(href="/posts/#{post._id}/comments/#{a_comment._id}/thread") View More Replies (#{a_comment.comments.length})
 					- else
 						- if (currentUser)
-							a.link(href="/posts/#{post._id}/comments/#{a_comment._id}/reply") Reply
+							- const commentRedirect = currentUrl //(FIXME) + `#${a_comment._id}`
+							a.link(href="/posts/#{post._id}/comments/#{a_comment._id}/reply?redirect=#{commentRedirect}") Reply
 							a.link(href="#") Flag
 						- else
 							p #[a(href='/login')= "Login"] to reply to this comment

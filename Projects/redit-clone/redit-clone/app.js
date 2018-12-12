@@ -43,6 +43,16 @@ var checkAuth = (req, res, next) => {
 };
 app.use(checkAuth);
 
+var localz = (req, res, next) => {
+
+  // current url
+  res.locals.currentUrl = req.protocol + '://' + req.get('host') + req.originalUrl;
+  res.locals.redirect = req.query.redirect;
+
+  next()
+}
+app.use(localz);
+
 app.use('/', indexRouter);
 app.use('/', authRouter);
 app.use('/', usersRouter);

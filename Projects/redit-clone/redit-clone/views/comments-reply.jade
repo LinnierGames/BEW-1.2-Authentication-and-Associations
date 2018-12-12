@@ -3,12 +3,13 @@ extends layout
 block content
 	h1 New Reply for:
 
+	p Thread
+		a(href="/posts/#{post._id}/#" + parentComment._id).link.header= parentComment.content
 	p Post
-		a.link.header= post.title
-	p Comment
-		a.link.header= parentComment.content
+		a(href="/posts/#{post._id}").link.header= post.title
 
-	form(action="/posts/#{post._id}/comments/#{parentComment._id}/reply" method='post')
+
+	form(action="/posts/#{post._id}/comments/#{parentComment._id}/reply?redirect=#{redirect}" method='post')
 		textarea.form-control(name='content', placeholder='New Reply...')
 
 		input(type="submit" value="New Reply")

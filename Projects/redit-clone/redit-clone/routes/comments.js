@@ -1,13 +1,14 @@
 var express = require('express');
 var router = express.Router({ mergeParams: true });
 const requiresLogin = require('./requires-login')
+const redirectIfRequired = require('./redirect-if-required')
 
 const Posts = require('../models/posts')
 const Comments = require('../models/comments')
 
 router.get('/:commentId/thread', function(req, res, next) {
 	const popOptions = [
-	  { path: 'comments', populate: { path: 'comments', populate: { path: 'comments' }}}
+	  { path: 'comments', populate: { path: 'comments', populate: { path: 'comments', populate: { path: 'comments' }}}}
 	]
 	Posts.findById(req.params.postId)
 	  .populate('author')
@@ -60,7 +61,7 @@ router.post('/', requiresLogin, function(req, res, next) {
 					return next()
 				}
 
-				res.redirect("/")
+				redirectIfRequired(req, res, `/posts/${req.params.postId}`)
 			})
 		})
 	})
@@ -89,7 +90,8 @@ router.post('/:commentId/reply', requiresLogin, function(req, res, next) {
 							return next()
 						}
 
-						res.redirect(`/posts/${req.params.postId}`)
+						redirectIfRequired(req, res, `/posts/${req.params.postId}`)
+						//res.redirect()
 					})
 				})
 				.catch((error) => {

@@ -6,7 +6,23 @@ block content
 	p Post
 		a(href="/posts/#{post._id}").link.header= post.title
 	p Thread for
-		a(href="/posts/#{post._id}/#" + parentComment._id).link.header= parentComment.content
+		a.header.link= parentComment.content
+		- //a(href="/posts/#{post._id}/comments/#{parentComment._id}/thread").link.header= parentComment.content
+
+	p Replies: #{parentComment.comments.length}
+
+	- if (currentUser)
+		form(action='/posts/#{post._id}/comments/#{parentComment._id}/reply?redirect=#{currentUrl}' method='post')
+			textarea.form-control(name='content', placeholder='New Reply...')
+
+			input(type="submit" value="New Reply")
+
+			- //hidden
+			input(type='hidden' name="postId" value=post._id)
+			input(type='hidden' name="parentComment" value=parentComment._id)
+			input(type='hidden' name="author" value=currentUser._id)
+	- else
+		p #[a(href='/login')= "Login"] to add a comment
 
 	- var comments = parentComment.comments;
 	include particals/_comments
