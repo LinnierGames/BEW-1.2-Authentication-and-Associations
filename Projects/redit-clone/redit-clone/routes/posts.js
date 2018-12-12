@@ -4,6 +4,7 @@ var comments = require('./comments')
 const requiresLogin = require('./requires-login')
 
 const Posts = require('../models/posts')
+const Users = require('../models/users')
 
 router.get('/', function(req, res, next) {
   Posts.find((error, posts) => {
@@ -19,8 +20,18 @@ router.post('/new', requiresLogin, function(req, res, next) {
   var postBody = req.body
   filteredSubreddits = postBody.subreddits.split(",").map(e => e.trim()).filter(e => e != "")
   postBody.subreddits = filteredSubreddits
+  postBody.author = req.user._id;
   Posts.create(postBody, (error, newPost) => {
-    res.redirect("/posts/")
+    Users.findById(newPost.author._id, (error, author) => {
+      author.posts.unshift(newPost)
+      author.save()
+        .then((newAuthor) => {
+          res.redirect(`/posts/${newPost._id}`)
+        })
+        .catch((error) => {
+          next()
+        })
+    })
   })
 });
 

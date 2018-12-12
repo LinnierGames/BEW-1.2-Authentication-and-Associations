@@ -6,6 +6,8 @@ const UserSchema = new Schema({
   password: { type: String, select: false },
   username: { type: String, required: true },
 
+	posts: [{ type: Schema.Types.ObjectId, ref: 'Post', required: true }],
+
   createdAt: { type: Date },
   updatedAt: { type: Date }
 });
