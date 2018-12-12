@@ -15,7 +15,7 @@ ul
 	each a_comment in comments
 		li.list-group-item
 			p= a_comment.content
-			a.link(href="#") Reply
+			a.link(href="/posts/#{post._id}/comments/#{a_comment._id}/reply")= "Reply: " + a_comment.comments.length
 			a.link(href="#") Flag
 			.text-right
 				a(href="/users/#{a_comment.author.username}")= a_comment.author.username
