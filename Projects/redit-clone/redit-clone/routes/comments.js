@@ -5,6 +5,36 @@ const requiresLogin = require('./requires-login')
 const Posts = require('../models/posts')
 const Comments = require('../models/comments')
 
+router.get('/:commentId/thread', function(req, res, next) {
+	const popOptions = [
+	  { path: 'comments', populate: { path: 'comments', populate: { path: 'comments' }}}
+	]
+	Posts.findById(req.params.postId)
+	  .populate('author')
+	  .then((post) => {
+		Comments.findById(req.params.commentId)
+			.then((comment) => {
+				Comments.populate(comment, popOptions, (error, popComments) => {
+				  res.render('comments-show', { title: post.title, parentComment: popComments, post });
+				})
+			})
+			.catch((error) => {
+			  if (error) {
+				console.log(error)
+		
+				return next()
+			  }
+			})
+	  })
+	  .catch((error) => {
+		if (error) {
+		  console.log(error)
+  
+		  return next()
+		}
+	  })
+});
+
 router.post('/', requiresLogin, function(req, res, next) {
 	Posts.findById(req.params.postId, (error, post) => {
 		if (error) {
@@ -47,7 +77,6 @@ router.get('/:commentId/reply', requiresLogin, function(req, res, next) {
 });
 
 router.post('/:commentId/reply', requiresLogin, function(req, res, next) {
-
 	Comments.findById(req.params.commentId)
 		.then((parentComment) => {
 			Comments.create(req.body)

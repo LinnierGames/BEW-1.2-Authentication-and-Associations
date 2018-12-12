@@ -1,0 +1,12 @@
+extends layout
+
+block content
+	h1 Comment Thread
+
+	p Post
+		a(href="/posts/#{post._id}").link.header= post.title
+	p Thread for
+		a(href="/posts/#{post._id}/#" + parentComment._id).link.header= parentComment.content
+
+	- var comments = parentComment.comments;
+	include particals/_comments

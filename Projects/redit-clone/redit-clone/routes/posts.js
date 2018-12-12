@@ -5,6 +5,7 @@ const requiresLogin = require('./requires-login')
 
 const Posts = require('../models/posts')
 const Users = require('../models/users')
+const Comments = require('../models/comments')
 
 router.get('/', function(req, res, next) {
   Posts.find().populate('author').exec((error, posts) => {
@@ -36,14 +37,20 @@ router.post('/new', requiresLogin, function(req, res, next) {
 });
 
 router.get('/:postId', function(req, res, next) {
+  const popOptions = [
+    { path: 'comments', populate: { path: 'comments', populate: { path: 'comments' }}}
+  ]
   Posts.findById(req.params.postId)
-  .populate({
-    path: 'comments',
-    populate: { path: 'author' }
-  })
-  .populate('author')
+    .populate({
+      path: 'comments',
+      populate: { path: 'author' }
+    })
+    .populate('author')
     .then((post) => {
-      res.render('posts-show', { title: post.title, post, comments: post.comments });
+      Comments.populate(post.comments, popOptions, (error, popComments) => {
+        post.comments = popComments
+        res.render('posts-show', { title: post.title, post, comments: post.comments });
+      })
     })
     .catch((error) => {
       if (error) {

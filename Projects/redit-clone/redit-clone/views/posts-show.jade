@@ -18,4 +18,18 @@ block content
 			p= post.summary
 
 			h3 Comments
+
+			p Comments: #{comments.length}
+
+			- if (currentUser)
+				form(action='/posts/#{post._id}/comments' method='post')
+					textarea.form-control(name='content', placeholder='New Comment...')
+
+					input(type="submit" value="New Comment")
+
+					- //hidden
+					input(type='hidden' name="postId" value=post._id)
+			- else
+				p #[a(href='/login')= "Login"] to add a comment
+				
 			include particals/_comments

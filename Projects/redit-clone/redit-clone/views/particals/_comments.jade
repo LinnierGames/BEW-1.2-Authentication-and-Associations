@@ -1,21 +1,24 @@
-p Comments: #{comments.length}
+- // given a post: Post {populated author}, array of comments: [Comment] {comments are populated 3 levels deep}
 
-- if (currentUser)
-	form(action='/posts/#{post._id}/comments' method='post')
-		textarea.form-control(name='content', placeholder='New Comment...')
+mixin popComments(comments, indent)
+	- if (comments)
+		- console.log(comments, indent)
+		each a_comment in comments
+			.media.list-group-item
+				.media-body
+					p(id=a_comment._id)= a_comment.content
+					- if (indent >= 3)
+						a(href="/posts/#{post._id}/comments/#{a_comment._id}/thread") View More Replies (#{comments.length})
+					- else
+						- if (currentUser)
+							a.link(href="/posts/#{post._id}/comments/#{a_comment._id}/reply") Reply
+							a.link(href="#") Flag
+						- else
+							p #[a(href='/login')= "Login"] to reply to this comment
+						- if (a_comment.author)
+							.text-right
+								a(href="/users/#{a_comment.author.username}")= a_comment.author.username
+					
+						+popComments(a_comment.comments, indent + 1)
 
-		input(type="submit" value="New Comment")
-
-		- //hidden
-		input(type='hidden' name="postId" value=post._id)
-- else
-	p #[a(href='/login')= "Login"] to add a comment
-
-ul
-	each a_comment in comments
-		li.list-group-item
-			p= a_comment.content
-			a.link(href="/posts/#{post._id}/comments/#{a_comment._id}/reply")= "Reply: " + a_comment.comments.length
-			a.link(href="#") Flag
-			.text-right
-				a(href="/users/#{a_comment.author.username}")= a_comment.author.username
++popComments(comments, 0)
