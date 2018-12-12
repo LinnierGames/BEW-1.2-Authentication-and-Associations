@@ -3,7 +3,6 @@ var router = express.Router();
 var comments = require('./comments')
 
 const Posts = require('../models/posts')
-const Comments = require('../models/comments')
 
 router.get('/', function(req, res, next) {
   Posts.find((error, posts) => {
