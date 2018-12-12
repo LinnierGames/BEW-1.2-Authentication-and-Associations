@@ -12,8 +12,10 @@ router.post('/', requiresLogin, function(req, res, next) {
 
 			return next()
 		}
+		var commentBody = req.body
+		commentBody.author = req.user._id
 		
-		Comments.create(req.body, (error, newComment) => {
+		Comments.create(commentBody, (error, newComment) => {
 			if (error) {
 				console.log(error)
 
