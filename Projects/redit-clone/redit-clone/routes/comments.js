@@ -71,7 +71,7 @@ router.get('/:commentId/reply', requiresLogin, function(req, res, next) {
 		.then((post) => {
 			Comments.findById(req.params.commentId)
 				.then((comment) => {
-					res.render('comment-reply', { parentComment: comment, post: post })
+					res.render('comments-reply', { parentComment: comment, post: post })
 				})
 		})
 });
