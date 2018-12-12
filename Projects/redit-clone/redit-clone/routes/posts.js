@@ -7,7 +7,7 @@ const Posts = require('../models/posts')
 const Users = require('../models/users')
 
 router.get('/', function(req, res, next) {
-  Posts.find((error, posts) => {
+  Posts.find().populate('author').exec((error, posts) => {
     res.render('posts-index', { title: 'Posts', posts, currentUser: req.user });
   })
 });
@@ -37,7 +37,11 @@ router.post('/new', requiresLogin, function(req, res, next) {
 
 router.get('/:postId', function(req, res, next) {
   Posts.findById(req.params.postId)
-    .populate('comments')
+  .populate({
+    path: 'comments',
+    populate: { path: 'author' }
+  })
+  .populate('author')
     .then((post) => {
       res.render('posts-show', { title: post.title, post, comments: post.comments, currentUser: req.user });
     })

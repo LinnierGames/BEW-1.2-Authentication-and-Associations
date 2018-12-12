@@ -1,6 +1,8 @@
 extend layout
 
 block content
+	p Author
+		a.link(href="/users/#{post.author.username}")= post.author.username
 	h1= title
 	.row
 		.col-sm-6.col-sm-offset-3

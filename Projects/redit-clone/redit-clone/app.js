@@ -44,7 +44,7 @@ app.use(checkAuth);
 
 app.use('/', indexRouter);
 app.use('/', authRouter);
-app.use('/users', usersRouter);
+app.use('/', usersRouter);
 app.use('/posts', postsRouter);
 
 // catch 404 and forward to error handler
