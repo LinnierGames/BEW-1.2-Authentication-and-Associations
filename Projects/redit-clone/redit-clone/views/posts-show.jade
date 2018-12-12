@@ -6,7 +6,7 @@ block content
 		.col-sm-6.col-sm-offset-3
 			p Subread-its
 				each a_subredit in post.subreddits
-					a.subreddit-link(href="/posts/r/#{a_subredit}")= a_subredit
+					a.link(href="/posts/r/#{a_subredit}")= a_subredit
 			
 			a.lead(href=post.url)= post.url
 
