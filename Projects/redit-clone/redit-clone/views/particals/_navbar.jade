@@ -35,9 +35,9 @@ nav.navbar.navbar-expand-lg.navbar-light.bg-light
     ul.nav.navbar-nav.navbar-right
       - if (currentUser)
         li
-          a(href='/logout') Logout
+          a.link(href='/logout') Logout
       - else
         li
-          a(href='/login') Login
+          a.link(href='/login') Login
         li
-          a(href='/sign-up') Sign Up
+          a.link(href='/sign-up') Sign Up

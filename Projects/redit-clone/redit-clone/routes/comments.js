@@ -13,7 +13,7 @@ router.post('/', requiresLogin, function(req, res, next) {
 			return next()
 		}
 		var commentBody = req.body
-		commentBody.author = req.user._id
+		commentBody.author = req.currentUser._id
 		
 		Comments.create(commentBody, (error, newComment) => {
 			if (error) {

@@ -8,19 +8,19 @@ const Users = require('../models/users')
 
 router.get('/', function(req, res, next) {
   Posts.find().populate('author').exec((error, posts) => {
-    res.render('posts-index', { title: 'Posts', posts, currentUser: req.user });
+    res.render('posts-index', { title: 'Posts', posts });
   })
 });
 
 router.get('/new', requiresLogin, function(req, res, next) {
-  res.render('posts-new', { title: "New Post", currentUser: req.user });
+  res.render('posts-new', { title: "New Post" });
 });
 
 router.post('/new', requiresLogin, function(req, res, next) {
   var postBody = req.body
   filteredSubreddits = postBody.subreddits.split(",").map(e => e.trim()).filter(e => e != "")
   postBody.subreddits = filteredSubreddits
-  postBody.author = req.user._id;
+  postBody.author = req.currentUser._id;
   Posts.create(postBody, (error, newPost) => {
     Users.findById(newPost.author._id, (error, author) => {
       author.posts.unshift(newPost)
@@ -43,7 +43,7 @@ router.get('/:postId', function(req, res, next) {
   })
   .populate('author')
     .then((post) => {
-      res.render('posts-show', { title: post.title, post, comments: post.comments, currentUser: req.user });
+      res.render('posts-show', { title: post.title, post, comments: post.comments });
     })
     .catch((error) => {
       if (error) {
@@ -59,7 +59,7 @@ router.get("/r/:subreddit", function(req, res) {
   const subreddit = req.params.subreddit
 
   Posts.find({ subreddits: subreddit}, (error, posts) => {
-    res.render('posts-index', { title: `Posts for ${subreddit}`, posts, currentUser: req.user });
+    res.render('posts-index', { title: `Posts for ${subreddit}`, posts });
   })
 });
 

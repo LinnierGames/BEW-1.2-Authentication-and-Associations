@@ -6,7 +6,7 @@ var router = express.Router();
 
 /* GET users listing. */
 router.get('/profile', requiresLogin, function(req, res, next) {
-  res.send('show the current users profile' + req.user);
+  res.send('show the current users profile' + req.currentUser);
 });
 
 router.get('/users/:username', function(req, res, next) {

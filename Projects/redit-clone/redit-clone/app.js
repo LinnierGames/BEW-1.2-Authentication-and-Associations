@@ -31,11 +31,12 @@ app.use(express.static(path.join(__dirname, 'public')));
 // auth middleware
 var checkAuth = (req, res, next) => {
   if (typeof req.cookies.nToken === "undefined" || req.cookies.nToken === null) {
-    req.user = null;
+    req.currentUser = null;
   } else {
     var token = req.cookies.nToken;
     var decodedToken = jwt.decode(token, { complete: true }) || {};
-    req.user = decodedToken.payload;
+    req.currentUser = decodedToken.payload;
+    res.locals.currentUser = decodedToken.payload
   }
 
   next();
