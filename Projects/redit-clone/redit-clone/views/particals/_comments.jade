@@ -1,12 +1,15 @@
-p Comments: #{comments.count}
+p Comments: #{comments.length}
 
-form(action='/posts/#{post._id}/comments' method='post')
-	textarea.form-control(name='content', placeholder='New Comment...')
+- if (currentUser)
+	form(action='/posts/#{post._id}/comments' method='post')
+		textarea.form-control(name='content', placeholder='New Comment...')
 
-	input(type="submit" value="New Comment")
+		input(type="submit" value="New Comment")
 
-	- //hidden
-	input(type='hidden' name="postId" value=post._id)
+		- //hidden
+		input(type='hidden' name="postId" value=post._id)
+- else
+	p #[a(href='/login')= "Login"] to add a comment
 
 ul
 	each a_comment in comments

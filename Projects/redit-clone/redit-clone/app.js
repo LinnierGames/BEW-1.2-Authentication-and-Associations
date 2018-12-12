@@ -28,6 +28,20 @@ app.use(cookieParser());
 app.use(expressValidator());
 app.use(express.static(path.join(__dirname, 'public')));
 
+// auth middleware
+var checkAuth = (req, res, next) => {
+  if (typeof req.cookies.nToken === "undefined" || req.cookies.nToken === null) {
+    req.user = null;
+  } else {
+    var token = req.cookies.nToken;
+    var decodedToken = jwt.decode(token, { complete: true }) || {};
+    req.user = decodedToken.payload;
+  }
+
+  next();
+};
+app.use(checkAuth);
+
 app.use('/', indexRouter);
 app.use('/', authRouter);
 app.use('/users', usersRouter);

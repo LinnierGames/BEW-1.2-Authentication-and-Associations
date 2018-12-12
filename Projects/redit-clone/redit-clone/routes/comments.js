@@ -1,10 +1,11 @@
 var express = require('express');
 var router = express.Router({ mergeParams: true });
+const requiresLogin = require('./requires-login')
 
 const Posts = require('../models/posts')
 const Comments = require('../models/comments')
 
-router.post('/', function(req, res, next) {
+router.post('/', requiresLogin, function(req, res, next) {
 	Posts.findById(req.params.postId, (error, post) => {
 		if (error) {
 			console.log(error)
